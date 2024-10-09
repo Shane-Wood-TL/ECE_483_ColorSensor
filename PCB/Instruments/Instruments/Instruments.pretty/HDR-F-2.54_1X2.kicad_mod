@@ -1,0 +1,224 @@
+(footprint "HDR-F-2.54_1X2"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "H2"
+		(at -0.254 -2.4384 0)
+		(layer "F.SilkS")
+		(uuid "e747a0af-8f27-489c-9f66-ed7efdae6659")
+		(effects
+			(font
+				(size 0.9144 0.9144)
+				(thickness 0.1524)
+			)
+			(justify left top)
+		)
+	)
+	(property "Value" "HDR-F-2.54_1x2"
+		(at -0.254 -4.2164 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "7d9f1722-3d97-4827-a241-b528247c12f2")
+		(effects
+			(font
+				(size 0.9144 0.9144)
+				(thickness 0.1524)
+			)
+			(justify left top)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7054c30d-5158-4a6f-a8c3-50918e35fd5f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2d891ee4-8620-463a-bb71-11606bbbd5dc")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "285f5a2b-8a33-4af6-b4ec-06520cd904a4")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "JLC_3DModel" "e7f904eaea6b4bb482fbc74bcca30c6d"
+		(at 0 0 0)
+		(layer "Cmts.User")
+		(hide yes)
+		(uuid "3a5a0f71-2e28-4950-b90f-b188c43df85c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "JLC_3D_Size" "5.08 2.54"
+		(at 0 0 0)
+		(layer "Cmts.User")
+		(hide yes)
+		(uuid "17fc3f17-0d55-4b0d-8b3e-7184fd9fdd27")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_line
+		(start -2.54 -1.27)
+		(end 2.54 -1.27)
+		(stroke
+			(width 0.2032)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "ce6ce658-e7ce-49f3-8c8b-aeed87289d6f")
+	)
+	(fp_line
+		(start -2.54 1.2446)
+		(end -2.54 -1.27)
+		(stroke
+			(width 0.2032)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "a707eaaa-5d7e-4bca-945c-9d077f60c9d4")
+	)
+	(fp_line
+		(start 2.54 -1.27)
+		(end 2.54 1.2446)
+		(stroke
+			(width 0.2032)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "90b0f8a2-21e7-4d3a-b250-1406e6424392")
+	)
+	(fp_line
+		(start 2.54 1.2446)
+		(end -2.54 1.2446)
+		(stroke
+			(width 0.2032)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "06f0a88c-23ee-4e62-97c6-db710fed8c41")
+	)
+	(fp_circle
+		(center -1.27 0)
+		(end -1.0978 0)
+		(stroke
+			(width 0.3445)
+			(type default)
+		)
+		(fill none)
+		(layer "User.4")
+		(uuid "7ddbb21f-de58-41be-986f-f50674150ee8")
+	)
+	(fp_circle
+		(center 1.27 0)
+		(end 1.4422 0)
+		(stroke
+			(width 0.3445)
+			(type default)
+		)
+		(fill none)
+		(layer "User.4")
+		(uuid "544d06f1-377f-48e4-a144-e78981af57d3")
+	)
+	(fp_circle
+		(center -2.6416 1.3462)
+		(end -2.6116 1.3462)
+		(stroke
+			(width 0.06)
+			(type default)
+		)
+		(fill none)
+		(layer "User.5")
+		(uuid "7bbd8b51-9f8a-4187-bdd5-75fdff14587b")
+	)
+	(pad "1" thru_hole rect
+		(at -1.27 0 270)
+		(size 1.5748 1.5748)
+		(drill 0.889)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(solder_mask_margin 0.0508)
+		(thermal_bridge_angle 0)
+		(uuid "85941d8b-3e09-4471-a787-aa6b75666123")
+	)
+	(pad "2" thru_hole oval
+		(at 1.27 0 270)
+		(size 1.5748 1.5748)
+		(drill 0.889)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(solder_mask_margin 0.0508)
+		(thermal_bridge_angle 0)
+		(uuid "407d5fdf-31f1-45d5-bf8b-f747eb539fdb")
+	)
+	(zone
+		(net 0)
+		(net_name "")
+		(layer "User.3")
+		(uuid "3165bea3-cd66-4751-8ccf-668e66eaa8c3")
+		(hatch edge 0.5)
+		(priority 100)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0)
+		(filled_areas_thickness no)
+		(fill yes
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+		)
+		(polygon
+			(pts
+				(xy -2.6416 -1.3716) (xy 2.6416 -1.3716) (xy 2.6416 1.3462) (xy -2.6416 1.3462)
+			)
+		)
+		(filled_polygon
+			(layer "User.3")
+			(island)
+			(pts
+				(xy -2.6416 -1.3716) (xy 2.6416 -1.3716) (xy 2.6416 1.3462) (xy -2.6416 1.3462)
+			)
+		)
+	)
+	(model "${KIPRJMOD}/EASYEDA_MODELS/HDR-F-2.54_1x2.step"
+		(offset
+			(xyz -0 0.0127 -3.048)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -0 0)
+		)
+	)
+)

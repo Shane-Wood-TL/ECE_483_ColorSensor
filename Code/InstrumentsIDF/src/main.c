@@ -38,7 +38,7 @@ void app_main() {
     setupI2CMaster();
     cppMain();
 
-    
+    //code never gets here
     while (1) {
         //vTaskDelay(1000 / portTICK_PERIOD_MS);
         // Draw some pixels

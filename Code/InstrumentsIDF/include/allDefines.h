@@ -18,7 +18,7 @@
 //i2c setup
 #define I2C_MASTER_SCL_IO GPIO_NUM_7     // GPIO for SCL
 #define I2C_MASTER_SDA_IO GPIO_NUM_6       // GPIO for SDA
-#define I2C_MASTER_FREQ_HZ 100000   // Frequency of I2C (100 kHz)
+#define I2C_MASTER_FREQ_HZ 400000   // Frequency of I2C (400 kHz)
 #define I2C_MASTER_NUM I2C_NUM_0    // I2C port number
 
 
@@ -32,4 +32,6 @@
 #define TCS3472Address 0x29 //Color sensor I2C Address
 #define ledPinTCS GPIO_NUM_8 //gpio pin for the sensor led
 
+//switch setup
+#define switchPin GPIO_NUM_4
 #endif

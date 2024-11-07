@@ -1,6 +1,8 @@
 #include "allCppDefines.h"
 extern const uint16_t *fontMap[128];//ASCII table
 
+
+//map indexs to fonts based on using ASCII as a indxe
 void initializeFontMap(){
     fontMap['0'] = zero;
     fontMap['1'] = one;
@@ -71,15 +73,7 @@ void initializeFontMap(){
     fontMap['|'] = verticalBar;
 }
 
-
-// fontFile::fontFile(){
-// 	initializeFontMap();
-// }
-
-// const uint16_t* fontFile::getLetter(uint8_t letter){
-// 	return fontMap[(uint8_t)letter];
-// }
-
+//gets a pointer to the pixel data for a letter
 const uint16_t* getLetter(uint8_t letter){
 	return fontMap[(uint8_t)letter];
 }

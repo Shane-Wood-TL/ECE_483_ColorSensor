@@ -92,18 +92,19 @@ void ssd1306C::clearSSD1306()
     }
 }
 
-void ssd1306C::drawPixelSSD1306(uint8_t x, uint8_t y, bool color)
+void ssd1306C::drawPixelSSD1306(uint8_t x, uint8_t y)
 {
-    if (x >= 128 || y >= 64)
+    if (x >= 128 || y >= 64){
         return; // Out of bounds
-    if (color)
-    {
-        buffer[x + (y / 8) * 128] |= (1 << (y % 8));
     }
-    else
-    {
-        buffer[x + (y / 8) * 128] &= ~(1 << (y % 8));
-    }
+    uint8_t pixelInPage = (1 << (y % 8)); //limit the pixel from 0 to 7 with a 1 in the position 0000_0001, 0000_0010, etc
+    //buffer is indexed as such
+	// x straight across 0-127
+	//each one of these is 8 pixels bits tall, or 1 page
+	//repeat for pages 0-8
+	//leading to a total size of 128*8 = 1024 page "strips" each containing the data for 8 pixels
+	uint16_t bufferIndex = uint16_t(x + ((y / 8) * SSD1306HorizontalRes));
+    buffer[bufferIndex] |= pixelInPage;  //write to the buffer based on page and column
 }
 
 void ssd1306C::writeBufferSSD1306()
@@ -120,14 +121,15 @@ void ssd1306C::writeBufferSSD1306()
 
 void ssd1306C::writeLetterSSD1306(uint8_t letter, uint8_t xPos, uint8_t yPos)
 {
-    const uint16_t *matrix = getLetter(letter);
+
+    const uint16_t *matrix = getLetter(letter);//get the pixel data for one font char
     for (int i = 0; i < 16; i++)
     { // 16 tall
         for (int j = 0; j < 12; j++)
         { // 12 wide
             if ((matrix[i]) & (1 << (12 - j)))
             {
-                drawPixelSSD1306(xPos + j, yPos + i, true);
+                drawPixelSSD1306(xPos + j, yPos + i); //draw the pixel to buffer if on
             }
         }
     }
@@ -135,37 +137,40 @@ void ssd1306C::writeLetterSSD1306(uint8_t letter, uint8_t xPos, uint8_t yPos)
 
 void ssd1306C::writeStringSSD1306(std::string Word, uint8_t xPos, uint8_t yPos)
 {
-
     for (uint8_t i = 0; i < Word.length(); i++)
     {
-        writeLetterSSD1306(Word[i], xPos + i * 12, yPos);
+        writeLetterSSD1306(Word[i], xPos + i * 12, yPos); //each char is 12 wide, go through each letter
+        //with proper spacing
     }
 }
 
 ssd1306C::ssd1306C(queue *colorQueueI, color *checkColorsI, Inputqueue *switchI)
 {
+    //map the member variables to arguments
     colorQueue = colorQueueI;
     checkColors = checkColorsI;
     switchQ = switchI;
     initSSD1306(); // set up display
-    clearSSD1306();
+    clearSSD1306(); //clear display
 
-    // Send the buffer to the display
+    // Send the empty buffer to the display
     writeBufferSSD1306();
 }
 
 double ssd1306C::calculateDistance(uint8_t red0, uint8_t red1, uint8_t green0, uint8_t green1, uint8_t blue0, uint8_t blue1)
 {
+    //does pythagorean theorm in 3 dimensions based on each color
     return (double)sqrt(pow((double)(red1 - red0), 2) + pow((double)(green1 - green0), 2) + pow((double)(blue1 - blue0), 2));
 }
 
 std::string ssd1306C::findColor(uint8_t r, uint8_t g, uint8_t b, color *colorList, uint8_t colorCount)
 {
-    double closest = 1000;
-    std::string currentClosestName = "Black";
-    for (uint8_t i = 0; i < colorCount; i++)
+    double closest = 1000; //some color will be closer than 1000 away
+    std::string currentClosestName = "Black"; //if not assume it is black
+    for (uint8_t i = 0; i < colorCount; i++) //go through each color in the named color list
     {
         double currentClosest = calculateDistance(r, colorList[i].red, g, colorList[i].green, b, colorList[i].blue);
+        //change the goal post if a lower distance is found
         if (currentClosest < closest)
         {
             currentClosestName = colorList[i].name;
@@ -178,6 +183,7 @@ std::string ssd1306C::findColor(uint8_t r, uint8_t g, uint8_t b, color *colorLis
 // empties buffer so that new data can be put into it
 void ssd1306C::clearBuffer()
 {
+    //reset the buffer to all 0's
     for (uint16_t i = 0; i < 1024; i++)
     {
         buffer[i] = 0;
@@ -187,46 +193,71 @@ void ssd1306C::clearBuffer()
 
 void ssd1306C::percentColors()
 {
+    //percent of r,g,b
     float percentR;
     float percentG;
     float percentB;
 
-    float sum = currentColor.red + currentColor.green + currentColor.green;
+    //total readings so percents can be found
+    float sum = currentColor.red + currentColor.green + currentColor.blue;
+    //
+
+    if(currentColor.red == 0){
+        currentColor.red = 1; //prevent divide by 0 errors
+    }
+    if(currentColor.green == 0){
+        currentColor.green = 1; //prevent divide by 0 errors
+    }
+    if(currentColor.blue == 0){
+        currentColor.blue = 1; //prevent divide by 0 errors
+    }
+    //if there is color, find the percents
     if (sum > 10)
     {
         percentR = currentColor.red / sum;
-        percentG = currentColor.blue / sum;
-        percentB = currentColor.green / sum;
+        percentG = currentColor.green / sum;
+        percentB = currentColor.blue / sum;
     }
-    else
+    else //no color, all 0
     {
         percentR = 0;
         percentG = 0;
         percentB = 0;
     }
-    writeStringSSD1306(std::to_string((uint8_t)(percentR * 100)), 0, 15);
-    writeStringSSD1306(std::to_string((uint8_t)(percentG * 100)), 0, 31);
-    writeStringSSD1306(std::to_string((uint8_t)(percentB * 100)), 0, 47);
+    //write chars to display
+    writeStringSSD1306("R", 0, 15);
+    writeStringSSD1306("G", 0, 31);
+    writeStringSSD1306("B", 0, 47);
+
+    //write percents to the display
+    writeStringSSD1306(std::to_string((uint8_t)(percentR * 100))+"%", 11, 15);
+    writeStringSSD1306(std::to_string((uint8_t)(percentG * 100))+"%", 11, 31);
+    writeStringSSD1306(std::to_string((uint8_t)(percentB * 100))+"%", 11, 47);
 }
 
 void ssd1306C::namedColors()
 {
+    //named color mode
+    //find the closest
     std::string colorL = findColor(currentColor.red, currentColor.green, currentColor.blue, checkColors, checkableColorsCount);
-    // writeStringSSD1306(std::to_string(correctedRedINT),buffer,0,15);
-    // writeStringSSD1306(std::to_string(correctedGreenINT),buffer,0,31);
-    // writeStringSSD1306(std::to_string(correctedBlueINT),buffer,0,47);
+    //write the number readings to the display
+    writeStringSSD1306(std::to_string(currentColor.red),0,15);
+    writeStringSSD1306(std::to_string(currentColor.green),0,31);
+    writeStringSSD1306(std::to_string(currentColor.blue),0,47);
+
+    //write the named color
     writeStringSSD1306(colorL, 0, 0);
 }
 
 void ssd1306C::update(){
-    switchQ->enqueue(isSwitched); //check which mode it is in
-    isSwitched = false;
-    if(colorQueue->dequeue(&currentColor)){
+    switchQ->dequeue(&isSwitched); //check which mode it is in
+
+    if(colorQueue->dequeue(&currentColor)){ //see if there is new data
         clearBuffer();
         if(isSwitched){
-            percentColors();
+            percentColors(); //switch is on, use percent mode
         }else{
-            namedColors();
+            namedColors(); //switch is off, use named mode
         }
 
     }
@@ -235,5 +266,5 @@ void ssd1306C::update(){
 }
 
 const uint16_t* ssd1306C::getLetter(uint8_t letter){
-	return fontMap[letter];
+	return fontMap[letter]; //return the font data for a char
 }

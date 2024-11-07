@@ -126,55 +126,62 @@ void tcs3472C::getNewValues()
 
 
 void tcs3472C::correctValues(){
+    //run the correction based on the values in #allCppDefines.h
+
+    //do the inital uint16 to uint8_t conversion
     correctedRedINT = (uint8_t)(((r - redRawLow) * redReferenceRange) / (redRawRange));
     correctedGreenINT = (uint8_t)(((g - greenRawLow) * greenReferenceRange) / (greenRawRange));
     correctedBlueINT = (uint8_t)(((b - blueRawLow) * blueReferenceRange) / (blueRawRange));
-    float tempRed = pow(correctedRedINT, 1.11);
-    tempRed = (tempRed * 1.04);
+    
+    //run the exponential part of the correction for red
+    float tempRed = pow(correctedRedINT, redExp);
+    tempRed = ((tempRed * redM) + redB);
     if (tempRed > 255)
     {
         tempRed = 255;
-        correctedRedINT = (uint8_t)tempRed;
+    }else if(tempRed < 0){
+        tempRed = 0;
     }
-    else
-    {
-        correctedRedINT = (uint8_t)tempRed;
-    }
+    correctedRedINT = (uint8_t)tempRed; //ensure that it is still a uint8_t
 
-    float tempGreen = pow(correctedGreenINT, 1.11);
-    tempGreen = (tempGreen + 21);
+    //run the exponential part of the correction for green
+    float tempGreen = pow(correctedGreenINT, greenExp);
+    tempGreen = ((tempGreen*greenM) + greenB);
     if (tempGreen > 255)
     {
         tempGreen = 255;
-        correctedGreenINT = (uint8_t)tempGreen;
+    }else if(tempGreen < 0){
+        tempGreen = 0;
     }
-    else
-    {
-        correctedGreenINT = (uint8_t)tempGreen;
-    }
+    correctedGreenINT = (uint8_t)tempGreen; //ensure that it is still a uint8_t
 
-    float tempBlue = pow(correctedBlueINT, 0.8);
-    tempBlue = (4 * tempBlue);
+    //run the exponential part of the correction for blue
+    float tempBlue = pow(correctedBlueINT, blueExp);
+    tempBlue = ((tempBlue*blueM) + blueB);
     if (tempBlue > 255)
     {
         tempBlue = 255;
         correctedBlueINT = (uint8_t)tempBlue;
+    }else if(tempGreen < 0){
+        tempGreen = 0;
     }
-    else
-    {
-        correctedBlueINT = (uint8_t)tempBlue;
-    }
+    correctedBlueINT = (uint8_t)tempBlue; //ensure that it is still a uint8_t
 }
 
 void tcs3472C::update(){
 
-    getNewValues();
-    correctValues();
-    color toSend;
-    toSend.name = "";
-    toSend.red=correctedRedINT;
+    getNewValues(); //check the sensor
+    correctValues(); //fix values
+    color toSend; //data to send
+    toSend.name = ""; //color is not named yet (display does this)
+    //send the corrected data to the display
+    toSend.red=correctedRedINT; 
     toSend.green=correctedGreenINT;
     toSend.blue=correctedBlueINT;
+    // toSend.red=r;
+    // toSend.green=g;
+    // toSend.blue=b;
+    //send the data
     colorQueue->enqueue(toSend);
 
 }

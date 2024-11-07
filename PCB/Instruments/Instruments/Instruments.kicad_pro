@@ -480,11 +480,11 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "C:/Users/townl/Downloads/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
-      "svg": "",
+      "step": "../../../../../../OneDrive/Desktop/Instruments.step",
+      "svg": "C:/Users/townl/Downloads/",
       "vrml": ""
     },
     "page_layout_descr_file": ""
@@ -578,7 +578,7 @@
     },
     "net_format_name": "",
     "page_layout_descr_file": "border.kicad_wks",
-    "plot_directory": "",
+    "plot_directory": "C:/Users/townl/OneDrive/Desktop/",
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,

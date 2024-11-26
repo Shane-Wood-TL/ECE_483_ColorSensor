@@ -241,9 +241,16 @@ void ssd1306C::namedColors()
     //find the closest
     std::string colorL = findColor(currentColor.red, currentColor.green, currentColor.blue, checkColors, checkableColorsCount);
     //write the number readings to the display
-    writeStringSSD1306(std::to_string(currentColor.red),0,15);
-    writeStringSSD1306(std::to_string(currentColor.green),0,31);
-    writeStringSSD1306(std::to_string(currentColor.blue),0,47);
+    std::string r = "R";
+    std::string g = "G";
+    std::string b = "B";
+    writeStringSSD1306(r,0,15);
+    writeStringSSD1306(g,0,31);
+    writeStringSSD1306(b,0,47);
+
+    writeStringSSD1306(std::to_string(currentColor.red),25,15);
+    writeStringSSD1306(std::to_string(currentColor.green),25,31);
+    writeStringSSD1306(std::to_string(currentColor.blue),25,47);
 
     //write the named color
     writeStringSSD1306(colorL, 0, 0);
